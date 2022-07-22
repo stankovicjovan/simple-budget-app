@@ -2,7 +2,7 @@ import React from "react";
 import { Card, ProgressBar, Stack, Button } from "react-bootstrap";
 import { currencyFormatter } from "../utils";
 
-function BudgetCard({ name, amount, max, gray }) {
+function BudgetCard({ name, amount, max, gray, onAddExpenseClick }) {
   // calculating percentage of expenses and defining color of progress bar
   const getProgressBarVariant = function (amount, max) {
     const ratio = (amount / max) * 100;
@@ -39,7 +39,11 @@ function BudgetCard({ name, amount, max, gray }) {
           now={amount}
         ></ProgressBar>
         <Stack direction="horizontal" gap="2" className="mt-4">
-          <Button variant="outline-primary" className="ms-auto">
+          <Button
+            variant="outline-primary"
+            className="ms-auto"
+            onClick={onAddExpenseClick}
+          >
             Add Expense
           </Button>
           <Button variant="outline-secondary">View Expense</Button>
