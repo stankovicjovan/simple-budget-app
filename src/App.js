@@ -4,13 +4,19 @@ import classes from "./App.module.css";
 import AddBudgetModal from "./components/AddBudgetModal";
 import AddExpenseModal from "./components/AddExpenseModal";
 import { useState } from "react";
-import { BudgetsProvider, useBudgets } from "./contexts/BudgetContexts";
+import {
+  BudgetsProvider,
+  UNCATAGORIZED_BUDGET_ID,
+  useBudgets,
+} from "./contexts/BudgetContexts";
 import UncategorizedBudgetCard from "./components/UncategorizedBudgetCard";
 import TotalBudgetCard from "./components/TotalBudgetCard";
+import ViewExpensesModal from "./components/ViewExpensesModal";
 
 function App() {
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false);
   const [showAddExpenseModal, setShowAddExpenseModal] = useState(false);
+  const [viewExpensesModalBudgetId, setViewExpensesModalBudgetId] = useState();
   const [addExpenseModalId, setAddExpenseModalId] = useState();
 
   const { budgets, getBudgetExpenses } = useBudgets();
@@ -20,9 +26,15 @@ function App() {
     setAddExpenseModalId(budgetId);
   }
 
+  // dynamic class control of div
+  let className;
+  if (budgets.length < 1) className = classes.cardtwo;
+  else {
+    className = classes.card;
+  }
+
   return (
     <>
-      {console.log(getBudgetExpenses(`aa5b569f-6df6-4e05-9976-a54578a09516`))}
       <Container className="my-4">
         <Stack direction="horizontal" gap="2" className="mb-4">
           <h1 className="me-auto">Budgets</h1>
@@ -43,7 +55,7 @@ function App() {
             Add Expense
           </Button>
         </Stack>
-        <div className={classes.card}>
+        <div className={className}>
           {budgets.map((budget) => {
             let amount = getBudgetExpenses(budget.id).reduce(
               (total, expense) => total + expense.amount,
@@ -56,12 +68,20 @@ function App() {
                 amount={amount}
                 max={budget.max}
                 onAddExpenseClick={() => openAddExpenseModal(budget.id)}
+                onViewExpenseClick={() =>
+                  setViewExpensesModalBudgetId(budget.id)
+                }
               />
             );
           })}
-          <UncategorizedBudgetCard onAddExpenseClick={openAddExpenseModal} />
-          <TotalBudgetCard />
+          <UncategorizedBudgetCard
+            onAddExpenseClick={openAddExpenseModal}
+            onViewExpenseClick={() =>
+              setViewExpensesModalBudgetId(UNCATAGORIZED_BUDGET_ID)
+            }
+          />
         </div>
+        <TotalBudgetCard />
       </Container>
       <AddBudgetModal
         show={showAddBudgetModal}
@@ -74,6 +94,13 @@ function App() {
         defaultBudgetId={addExpenseModalId}
         handleClose={() => {
           setShowAddExpenseModal(false);
+        }}
+      />
+      <ViewExpensesModal
+        budgetId={viewExpensesModalBudgetId}
+        defaultBudgetId={addExpenseModalId}
+        handleClose={() => {
+          setViewExpensesModalBudgetId();
         }}
       />
     </>

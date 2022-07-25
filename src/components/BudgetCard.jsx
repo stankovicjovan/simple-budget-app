@@ -7,8 +7,10 @@ function BudgetCard({
   amount,
   max,
   gray,
-  onAddExpenseClick,
   hideButtons,
+  onAddExpenseClick,
+  onViewExpenseClick,
+  budgetLength,
 }) {
   // calculating percentage of expenses and defining color of progress bar
   const getProgressBarVariant = function (amount, max) {
@@ -58,7 +60,9 @@ function BudgetCard({
             >
               Add Expense
             </Button>
-            <Button variant="outline-secondary">View Expense</Button>
+            <Button variant="outline-secondary" onClick={onViewExpenseClick}>
+              View Expense
+            </Button>
           </Stack>
         )}
       </Card.Body>

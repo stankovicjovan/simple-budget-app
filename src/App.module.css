@@ -1,6 +1,19 @@
 .card {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: 2fr 2fr;
   gap: 1rem;
   align-items: flex-start;
+  margin-bottom: 1rem;
+}
+@media only screen and (max-width: 768px) {
+  .card {
+    grid-template-columns: 1fr;
+  }
+}
+.cardtwo {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 1rem;
 }
